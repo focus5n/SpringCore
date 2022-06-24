@@ -1,3 +1,4 @@
+============================================
 1. The IoC(Inversion of Control) Container
 
     1. IoC
@@ -29,7 +30,7 @@
             4. Easier integration with Spring’s AOP features
             =. add enterprise-specific functionality
 
-
+============================================
 2. Container Overview
 
     1. The IoC Container
@@ -51,23 +52,77 @@
         2. then, the ApplicationContext is created and initialized.
         3. so you have a fully configured and executable system or application.
 
-
+============================================
 3. Form of Configuration Metadata
 
     1. XML-based Configuration
     2. Java-based Configuration
     3. Annotation-based Configuration
 
+============================================
 4. Java-based Configuration
 
     1. @Configuration -annotated classes
         1. indicates that its primary purpose is as a source of bean definitions.
         2. let inter-bean dependencies be defined by calling other @Bean methods in the same class.
 
+////////////////////////////////////////////////////////
+        @Configuration
+        public class AppConfig {
+
+            @Bean
+            public MyService myService() {
+                return new MyServiceImpl();
+            }
+        }
+////////////////////////////////////////////////////////
+        <beans>
+            <bean id="myService" class="com.acme.services.MyServiceImpl"/>
+        </beans>
+////////////////////////////////////////////////////////
+
     2. @Bean -annotated methods
         1. are used to indicate that a method instantiates, configures, and initializes a new object to be managed by the Spring IoC container.
         2. @Bean annotation plays the same role as the <bean /> element.
         3. You can use @Bean-annotated methods with any Spring @Component.
         4. However, @Component annotation is most often used with @Configuration beans.
+        5. @Bean methods are to be declared within @Configuration classes.
 
-5.
+        *. lite mode
+            1. without @Configuration.
+            2. 
+        *. full mode
+            1. with @Configuration.
+            2. always used and that cross-method references.
+            3. get redirected to the container’s lifecycle management.
+            4. This prevents the same @Bean method from accidentally being invoked through a regular Java call.
+            5. helps to reduce subtle bugs that can be hard to track down when operating in “lite” mode.
+
+============================================
+5. Instantiating the Spring Container by Using AnnotationConfigApplicationContext
+    
+        1. JSR-330 metadata
+            1. Spring의 표준 어노테이션을 Java의 표준 어노테이션으로 대체 가능
+            2. @Inject
+            3. 딱히 쓸 이유가 없다.
+
+============================================
+6. Simple Construction
+
+    1. ClassPathXmlApplicationContext
+        1. Spring XML files are used as input when instantiating a ClassPathXmlApplicationContext.
+        2. you can use @Configuration classes as input when instantiating an AnnotationConfigApplicationContext.
+
+    2. AnnotationConfigApplicationContext
+        1. 
+
+////////////////////////////////////////////////////////
+    public static void main(String[] args) {
+        ApplicationContext ctx = new AnnotationConfigApplicationContext(AppConfig.class);
+        MyService myService = ctx.getBean(MyService.class);
+        myService.doStuff();
+    }
+////////////////////////////////////////////////////////
+
+============================================
+7. Building the Container Programmatically by Using register(Class<?>…​)
