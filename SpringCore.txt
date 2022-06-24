@@ -1,0 +1,73 @@
+1. The IoC(Inversion of Control) Container
+
+    1. IoC
+        1. org.springframework.beans
+        2. org.springframework.context
+        3. explicit user code is not required to instantiate one or more instances of a Spring IoC container.
+
+    2. DI
+        1. a process whereby objects define their dependencies
+        2. only through
+            1. constructor arguments
+            2. arguments to a factory method
+            3. properties that set on the object instance after it is constructed or returned from a factory method.
+            4. The container then injects those dependencies when it creates the bean.
+            5. the bean itself controlling the instantiation or location of its dependencies.
+
+    3. Beans
+        1. are the backbone of your application
+        2. are instantiated, assembled, and managed by a Spring IoC container
+        3. are reflected in the configuration metadata used by a container.
+
+    4. Bean Factory
+        1. advanced configuration mechanism
+        2. managing any type of object
+        3. ApplicationContext
+            1. Message resource handling
+            2. Event publication
+            3. Application-layer specific contexts
+            4. Easier integration with Spring’s AOP features
+            =. add enterprise-specific functionality
+
+
+2. Container Overview
+
+    1. The IoC Container
+        1. org.springframework.context.ApplicationContext
+        2. is responsible for instantiating, configuring, and assembling the beans
+        3. gets its instructions on what objects to instantiate, configure, and assemble by reading configuration metadata
+
+    2. The configuration metadata
+        1. is represented in XML, Java annotations, or Java code
+        2. lets you express the objects that compose your application
+        3. and the rich interdependencies between those objects. 
+
+    3. Implements of the ApplicationContext
+        1. ClassPathXmlApplicationContext
+        2. FileSystemXmlApplicationContext
+
+    4. How spring works
+        1. Application classes are combined with configuration metadata.
+        2. then, the ApplicationContext is created and initialized.
+        3. so you have a fully configured and executable system or application.
+
+
+3. Form of Configuration Metadata
+
+    1. XML-based Configuration
+    2. Java-based Configuration
+    3. Annotation-based Configuration
+
+4. Java-based Configuration
+
+    1. @Configuration -annotated classes
+        1. indicates that its primary purpose is as a source of bean definitions.
+        2. let inter-bean dependencies be defined by calling other @Bean methods in the same class.
+
+    2. @Bean -annotated methods
+        1. are used to indicate that a method instantiates, configures, and initializes a new object to be managed by the Spring IoC container.
+        2. @Bean annotation plays the same role as the <bean /> element.
+        3. You can use @Bean-annotated methods with any Spring @Component.
+        4. However, @Component annotation is most often used with @Configuration beans.
+
+5.
