@@ -66,7 +66,7 @@
         1. indicates that its primary purpose is as a source of bean definitions.
         2. let inter-bean dependencies be defined by calling other @Bean methods in the same class.
 
-////////////////////////////////////////////////////////
+////////////////////////////////
         @Configuration
         public class AppConfig {
 
@@ -75,11 +75,11 @@
                 return new MyServiceImpl();
             }
         }
-////////////////////////////////////////////////////////
+////////////////////////////////
         <beans>
             <bean id="myService" class="com.acme.services.MyServiceImpl"/>
         </beans>
-////////////////////////////////////////////////////////
+////////////////////////////////
 
     2. @Bean -annotated methods
         1. are used to indicate that a method instantiates, configures, and initializes a new object to be managed by the Spring IoC container.
@@ -116,13 +116,13 @@
     2. AnnotationConfigApplicationContext
         1. 
 
-////////////////////////////////////////////////////////
+////////////////////////////////
     public static void main(String[] args) {
         ApplicationContext ctx = new AnnotationConfigApplicationContext(AppConfig.class);
         MyService myService = ctx.getBean(MyService.class);
         myService.doStuff();
     }
-////////////////////////////////////////////////////////
+////////////////////////////////
 
 ============================================
 7. Building the Container Programmatically by Using register(Class<?>…​)
