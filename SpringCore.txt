@@ -1,130 +1,205 @@
-============================================
-1. The IoC(Inversion of Control) Container
+1. IOC Container
 
-    1. IoC
-        1. org.springframework.beans
-        2. org.springframework.context
-        3. explicit user code is not required to instantiate one or more instances of a Spring IoC container.
+    1.1 Spring IoC Container and Beans
 
-    2. DI
-        1. a process whereby objects define their dependencies
-        2. only through
-            1. constructor arguments
-            2. arguments to a factory method
-            3. properties that set on the object instance after it is constructed or returned from a factory method.
-            4. The container then injects those dependencies when it creates the bean.
-            5. the bean itself controlling the instantiation or location of its dependencies.
+        *. org.springframework.beans
+        *. org.springframework.context
+        *. BeanFactory
+        *. ApplicationContext is the sub-Interface of BeanFactory
 
-    3. Beans
-        1. are the backbone of your application
-        2. are instantiated, assembled, and managed by a Spring IoC container
-        3. are reflected in the configuration metadata used by a container.
 
-    4. Bean Factory
-        1. advanced configuration mechanism
-        2. managing any type of object
-        3. ApplicationContext
-            1. Message resource handling
-            2. Event publication
-            3. Application-layer specific contexts
-            4. Easier integration with Spring’s AOP features
-            =. add enterprise-specific functionality
+    1.2 Container
 
-============================================
-2. Container Overview
+        1.2.1 Configuration Metadata 
 
-    1. The IoC Container
-        1. org.springframework.context.ApplicationContext
-        2. is responsible for instantiating, configuring, and assembling the beans
-        3. gets its instructions on what objects to instantiate, configure, and assemble by reading configuration metadata
+            *. org.springframework.context.ApplicationContext
+            *. is responsible for instantiating, configuring, and assembling the beans.
 
-    2. The configuration metadata
-        1. is represented in XML, Java annotations, or Java code
-        2. lets you express the objects that compose your application
-        3. and the rich interdependencies between those objects. 
+            *. ClassPathXmlApplicationContext
+            *. FileSystemXmlApplicationContext
 
-    3. Implements of the ApplicationContext
-        1. ClassPathXmlApplicationContext
-        2. FileSystemXmlApplicationContext
+            *. Make IoC Container.
+            *. Input Configuration Metadata (=Configuration)
+            *. and My Business Objects. (=Service)
+            *. Produces Fully Configured System Ready for Use.
 
-    4. How spring works
-        1. Application classes are combined with configuration metadata.
-        2. then, the ApplicationContext is created and initialized.
-        3. so you have a fully configured and executable system or application.
+            *. Annotation-based Configuration (Spring 2.5)
+            *. Java-based Configuration (Spring 3.0)
 
-============================================
-3. Form of Configuration Metadata
+            *. @Configuration
+            *. @Bean
+            *. @Import
+            *. @DependsOn
 
-    1. XML-based Configuration
-    2. Java-based Configuration
-    3. Annotation-based Configuration
 
-============================================
-4. Java-based Configuration
+        1.2.2 Instantiating
 
-    1. @Configuration -annotated classes
-        1. indicates that its primary purpose is as a source of bean definitions.
-        2. let inter-bean dependencies be defined by calling other @Bean methods in the same class.
+            *. ApplicationContext context;
+            *. context = new ClassPathXmlApplicationContext("services.xml", "daos.xml");
 
-////////////////////////////////
-        @Configuration
-        public class AppConfig {
+            *. IoC Container 안에 DAO 빈 등록
+            *. IoC Container 안에 Service 빈 등록하며 Service 안에 DAO 추가
 
-            @Bean
-            public MyService myService() {
-                return new MyServiceImpl();
-            }
-        }
-////////////////////////////////
-        <beans>
-            <bean id="myService" class="com.acme.services.MyServiceImpl"/>
-        </beans>
-////////////////////////////////
 
-    2. @Bean -annotated methods
-        1. are used to indicate that a method instantiates, configures, and initializes a new object to be managed by the Spring IoC container.
-        2. @Bean annotation plays the same role as the <bean /> element.
-        3. You can use @Bean-annotated methods with any Spring @Component.
-        4. However, @Component annotation is most often used with @Configuration beans.
-        5. @Bean methods are to be declared within @Configuration classes.
+        1.2.3 Using the Container
 
-        *. lite mode
-            1. without @Configuration.
-            2. 
-        *. full mode
-            1. with @Configuration.
-            2. always used and that cross-method references.
-            3. get redirected to the container’s lifecycle management.
-            4. This prevents the same @Bean method from accidentally being invoked through a regular Java call.
-            5. helps to reduce subtle bugs that can be hard to track down when operating in “lite” mode.
+            *. Create IoC Container
+            ApplicationContext context;
 
-============================================
-5. Instantiating the Spring Container by Using AnnotationConfigApplicationContext
-    
-        1. JSR-330 metadata
-            1. Spring의 표준 어노테이션을 Java의 표준 어노테이션으로 대체 가능
-            2. @Inject
-            3. 딱히 쓸 이유가 없다.
+            *. Configure Beans
+            context = new ClassPathXmlApplicationContext("services.xml", "daos.xml");
 
-============================================
-6. Simple Construction
+            *. Retrieve Configured Instance
+            PetStoreService service = context.getBean("petStore", PetStoreService.class);
 
-    1. ClassPathXmlApplicationContext
-        1. Spring XML files are used as input when instantiating a ClassPathXmlApplicationContext.
-        2. you can use @Configuration classes as input when instantiating an AnnotationConfigApplicationContext.
+            *. Use Configured Instance
+            List<String> userList = service.getUserNameList();
 
-    2. AnnotationConfigApplicationContext
-        1. 
 
-////////////////////////////////
-    public static void main(String[] args) {
-        ApplicationContext ctx = new AnnotationConfigApplicationContext(AppConfig.class);
-        MyService myService = ctx.getBean(MyService.class);
-        myService.doStuff();
-    }
-////////////////////////////////
+    1.3 Bean
 
-============================================
-7. Building the Container Programmatically by Using register(Class<?>…​)
+        1.3.1 Naming Beans
 
-    아 오늘은 좀 쉬자...
+            *. 
+
+
+        1.3.2 Instantiating Beans
+
+
+
+
+    1.4 Dependencies
+
+    1.5 Bean Scopes
+
+    1.6 Customizing the Nature of a Bean
+
+    1.7 Bean Definition Inheritance
+
+    1.8 Container Extension Points
+
+    1.9 Annotated-based Container Configuration
+
+    1.10 Classpath Scanning and Managed Components
+
+    1.11 JSR-330 Standard Annotations
+
+    1.12 Java-based Container Configuration
+
+    1.13 Environment Abstraction
+
+    1.14 Registering a LoadTimeWeaver
+
+    1.15 ApplicationContext
+
+    1.16 BeanFactory API
+
+2. Resources
+
+    2.1 Introduction
+
+    2.2 The Resource Interface
+
+    2.3 Built-in Resource Implementations
+
+    2.4 The ResourceLoader Interface
+
+    2.5 The ResourcePatternResolver Interface
+
+    2.6 The ResourceLoaderAware Interface
+
+    2.7 Resources as Dependencies
+
+    2.8 Application Contexts and Resource Paths
+
+3. Validation, Data Binding, Type Conversion
+
+    3.1 Validation by using Spring's Validator Interface
+
+    3.2 Resolving Codes to Error Messages
+
+    3.3 Bean Manipulation and BeanWrapper
+
+    3.4 Spring Type Conversion
+
+    3.5 Spring Field Formatting
+
+    3.6 Configuring a Global Date and Time Format
+
+    3.7 Java Bean Validation
+
+4. Spring Expression Language (SpEL)
+
+    4.1 Evaluation
+
+    4.2 Expressions in Bean Definitions
+
+    4.3 Language References
+
+    4.4 Classed Used in the Examples
+
+5. Aspect Oriented Programming with Spring
+
+    5.1 AOP Concepts
+
+    5.2 Spring AOP Capabilities and Goals
+
+    5.3 AOP Proxies
+
+    5.4 @AspectJ support
+
+    5.5 Schema-based AOP Support
+
+    5.6 Choosing which AOP Declaration Style to Use
+
+    5.7 Mixing Aspect Types
+
+    5.8 Proxing Mechanism
+
+    5.9 Programmatic Creation of @AspectJ Proxies
+
+    5.10 Using AspectJ with Spring Applications
+
+    5.11 Further Resources
+
+6. Spring AOP APIs
+
+    6.1 Pointcut API in Spring
+
+        6.1.1 Concepts
+
+        6.1.2 Operations on Pointcuts
+
+        6.1.3 AspectJ Expression Pointcuts
+
+        6.1.4 Convenience Pointcut Implementations
+
+        6.1.5 Pointcut Superclasses
+
+        6.1.6 Custom Pointcuts
+
+    6.2 Advice API in Spring
+
+    6.3 The Advisor API in Spring
+
+    6.4 Using the ProxyFactoryBean to Create AOP Proxies
+
+    6.5 Concise Proxy Definitions
+
+    6.6 Creating AOP Proxies Programmatically with the ProxyFactory
+
+    6.7 Manipulating Advised Objects
+
+    6.8 Using the "auto-proxy" facility
+
+    6.9 Using TargetSource Implementations
+
+    6.10 Defining New Advice Types
+
+7. Null-Safety
+
+8. Data Buffers and Codecs
+
+9. Logging
+
+10. Appendix
