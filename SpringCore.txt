@@ -51,7 +51,6 @@
 
             *. Retrieve Configured Instance
             PetStoreService service = context.getBean("petStore", PetStoreService.class);
-
             *. Use Configured Instance
             List<String> userList = service.getUserNameList();
 
@@ -60,17 +59,117 @@
 
         1.3.1 Naming Beans
 
-            *. 
+            *. id = 식별자
+            *. name = alias
+            *. Bean Naming onvention = camelCase
+            *. id=myBean, name=mb
+
+            *. <alias name="fromName" alias="toName"/>
 
 
         1.3.2 Instantiating Beans
 
+            *. with a Constructor
+                default Constructor + Getter / Setter 
 
+            *. with XML-based configuration metadata
+                <bean id="exampleBean" class="examples.ExampleBean"/>
+                <bean name="anotherExample" class="examples.ExampleBeanTwo"/>
+
+            *. with a Static Factory Method
+                1. 생성자에 private 접근 제어자를 선언하여 외부에서 호출할 수 없도록 설정.
+                2. private static 필드를 선언.
+                3. static 메서드를 선언.
+                4. 해당 메서드에 if문을 활용하여 필드가 null 값을 가진다면 클래스를 할당.
+                4. 메서드가 생성자를 대체.
+
+                public class ClientService {
+                    private static ClientService clientService = new ClientService;
+                    private ClientService() {}
+
+                    public static ClientService createInstance() {
+                        return clientService;
+                    }
+                }
+
+            *. by Using an Instance Factory Method
+
+                public class DefaultServiceLocator {
+                    private static ClientService clientService = new ClientService();
+                    private static ServerService serverService = new ServerService();
+
+                    public ClientService createClientService() {
+                        return clientService;
+                    }
+
+                    public ServerService createClientService() {
+                        return serverService;
+                    }
+                }
+
+            *. In Spring Docs
+
+                1. IoC Container 방식으로 생성한 Bean 객체는
+                2. Factory Method (static or instance) 방식으로 생성된 객체를 의미.
+
+            *. Determining a Bean's Runtime Type
+
+                1. is non-trivial to determine (=결정할 수 없다.)
+                2. 런타임 타입에 대해서 알고 싶다면 BeanFactory.getType 메서드를 호출하라.
 
 
     1.4 Dependencies
 
+        1.4.1 Dependency Injection (DI)
+
+            *. is a process whereby objects define their dependencies.
+            *. only through
+                1. constructor arguments
+                2. arguments to a factory method (static factory method)
+                3. properties that are set on the object instance after it is constructed or returned from a factory method (instance factory method)
+
+            *. The container then injects those dependencies when it creates the bean.
+
+            *. Constructor arguments name
+                public class ExampleBean {
+
+                    // Fields omitted
+
+                    @ConstructorProperties({"years", "ultimateAnswer"})
+                    public ExampleBean(int years, String ultimateAnswer) {
+                        this.years = years;
+                        this.ultimateAnswer = ultimateAnswer;
+                    }
+                }
+
+            *. Dependency Resolution Process
+
+                1. ApplicationContext is created and intialized with configuration metadata.
+                2. dependencies are expressed in
+                    1. properties (Getter & Setter)
+                    2. constructor arguments
+                    3. arguments to the static-factory method
+                3. Each properties or constructor argument is an actual definition of
+                    the value to set, or a reference to another bean in the container.
+                    (=set value)
+                4. Each properties or constructor argument is a value
+                    is converted from its specified foramt to the actual type of that
+                    property or constructor argument.
+                    (=type conversion)
+                5. By default, Spring can convert a value supplied in string format to all
+                    built-in types, such as int, long, String, boolean, and so forth.
+                6. Spring Container 방식에서는 bean 객체가 생성될 때 validate 한다.
+                    그러나 그 이후에 실제로 값이 할당된다.
+                7. 싱글톤 패턴의 Bean 객체는 생성시 값이 할당된다.
+                8. Bean 객체 생성은 암묵적으로 Beans 사이에서 graph 알고리즘을 유발한다.
+                9. 하나의 의존성이 다른 곳의 의존성과 연결된다.
+
+            *. Dependencies and Configuration in Detail
+
+
     1.5 Bean Scopes
+
+        *. 
 
     1.6 Customizing the Nature of a Bean
 
